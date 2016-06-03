@@ -6,6 +6,62 @@
 
 using namespace Rcpp;
 
+// ar_generate_randomness_cpp
+NumericVector ar_generate_randomness_cpp(int nparticles, int datalength, int dimension);
+RcppExport SEXP CoupledPF_ar_generate_randomness_cpp(SEXP nparticlesSEXP, SEXP datalengthSEXP, SEXP dimensionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type nparticles(nparticlesSEXP);
+    Rcpp::traits::input_parameter< int >::type datalength(datalengthSEXP);
+    Rcpp::traits::input_parameter< int >::type dimension(dimensionSEXP);
+    __result = Rcpp::wrap(ar_generate_randomness_cpp(nparticles, datalength, dimension));
+    return __result;
+END_RCPP
+}
+// ar_perturb_randomness_cpp
+NumericVector ar_perturb_randomness_cpp(const NumericVector& randomness, double rho, int dimension);
+RcppExport SEXP CoupledPF_ar_perturb_randomness_cpp(SEXP randomnessSEXP, SEXP rhoSEXP, SEXP dimensionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type randomness(randomnessSEXP);
+    Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< int >::type dimension(dimensionSEXP);
+    __result = Rcpp::wrap(ar_perturb_randomness_cpp(randomness, rho, dimension));
+    return __result;
+END_RCPP
+}
+// ar_rinit_rcpp
+NumericMatrix ar_rinit_rcpp(int nparticles, NumericVector theta, NumericVector rand, int dimension);
+RcppExport SEXP CoupledPF_ar_rinit_rcpp(SEXP nparticlesSEXP, SEXP thetaSEXP, SEXP randSEXP, SEXP dimensionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type nparticles(nparticlesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type rand(randSEXP);
+    Rcpp::traits::input_parameter< int >::type dimension(dimensionSEXP);
+    __result = Rcpp::wrap(ar_rinit_rcpp(nparticles, theta, rand, dimension));
+    return __result;
+END_RCPP
+}
+// ar_rtransition_rcpp
+NumericMatrix ar_rtransition_rcpp(const NumericMatrix& xparticles, NumericVector theta, int time, NumericVector rand, int dimension, NumericMatrix& A);
+RcppExport SEXP CoupledPF_ar_rtransition_rcpp(SEXP xparticlesSEXP, SEXP thetaSEXP, SEXP timeSEXP, SEXP randSEXP, SEXP dimensionSEXP, SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type xparticles(xparticlesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< int >::type time(timeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type rand(randSEXP);
+    Rcpp::traits::input_parameter< int >::type dimension(dimensionSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix& >::type A(ASEXP);
+    __result = Rcpp::wrap(ar_rtransition_rcpp(xparticles, theta, time, rand, dimension, A));
+    return __result;
+END_RCPP
+}
 // compute_cost1_
 NumericMatrix compute_cost1_(const NumericVector& x, const NumericVector& y);
 RcppExport SEXP CoupledPF_compute_cost1_(SEXP xSEXP, SEXP ySEXP) {
@@ -177,6 +233,45 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// one_step_lorenz_vector
+NumericMatrix one_step_lorenz_vector(NumericMatrix xparticles, double tstart, double tend, double h, NumericVector parameters);
+RcppExport SEXP CoupledPF_one_step_lorenz_vector(SEXP xparticlesSEXP, SEXP tstartSEXP, SEXP tendSEXP, SEXP hSEXP, SEXP parametersSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type xparticles(xparticlesSEXP);
+    Rcpp::traits::input_parameter< double >::type tstart(tstartSEXP);
+    Rcpp::traits::input_parameter< double >::type tend(tendSEXP);
+    Rcpp::traits::input_parameter< double >::type h(hSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type parameters(parametersSEXP);
+    __result = Rcpp::wrap(one_step_lorenz_vector(xparticles, tstart, tend, h, parameters));
+    return __result;
+END_RCPP
+}
+// lorenz_generate_randomness_cpp
+NumericVector lorenz_generate_randomness_cpp(int nparticles, int datalength);
+RcppExport SEXP CoupledPF_lorenz_generate_randomness_cpp(SEXP nparticlesSEXP, SEXP datalengthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type nparticles(nparticlesSEXP);
+    Rcpp::traits::input_parameter< int >::type datalength(datalengthSEXP);
+    __result = Rcpp::wrap(lorenz_generate_randomness_cpp(nparticles, datalength));
+    return __result;
+END_RCPP
+}
+// lorenz_perturb_randomness_cpp
+NumericVector lorenz_perturb_randomness_cpp(const NumericVector& randomness, double rho);
+RcppExport SEXP CoupledPF_lorenz_perturb_randomness_cpp(SEXP randomnessSEXP, SEXP rhoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type randomness(randomnessSEXP);
+    Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
+    __result = Rcpp::wrap(lorenz_perturb_randomness_cpp(randomness, rho));
+    return __result;
+END_RCPP
+}
 // malikpitt_
 NumericVector malikpitt_(const NumericVector& xparticles, const NumericVector& weights, double u);
 RcppExport SEXP CoupledPF_malikpitt_(SEXP xparticlesSEXP, SEXP weightsSEXP, SEXP uSEXP) {
@@ -201,6 +296,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// multinomial_resampling_n_
+IntegerVector multinomial_resampling_n_(const NumericVector& weights, int ndraws);
+RcppExport SEXP CoupledPF_multinomial_resampling_n_(SEXP weightsSEXP, SEXP ndrawsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< int >::type ndraws(ndrawsSEXP);
+    __result = Rcpp::wrap(multinomial_resampling_n_(weights, ndraws));
+    return __result;
+END_RCPP
+}
 // rmvnorm
 NumericMatrix rmvnorm(int nsamples, const NumericVector& mean, const NumericMatrix& covariance);
 RcppExport SEXP CoupledPF_rmvnorm(SEXP nsamplesSEXP, SEXP meanSEXP, SEXP covarianceSEXP) {
@@ -211,6 +318,32 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type mean(meanSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type covariance(covarianceSEXP);
     __result = Rcpp::wrap(rmvnorm(nsamples, mean, covariance));
+    return __result;
+END_RCPP
+}
+// rmvnorm_transpose
+NumericMatrix rmvnorm_transpose(int nsamples, const NumericVector& mean, const NumericMatrix& covariance);
+RcppExport SEXP CoupledPF_rmvnorm_transpose(SEXP nsamplesSEXP, SEXP meanSEXP, SEXP covarianceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type nsamples(nsamplesSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type mean(meanSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type covariance(covarianceSEXP);
+    __result = Rcpp::wrap(rmvnorm_transpose(nsamples, mean, covariance));
+    return __result;
+END_RCPP
+}
+// rmvnorm_transpose_cholesky
+NumericMatrix rmvnorm_transpose_cholesky(int nsamples, const NumericVector& mean, const Eigen::MatrixXd& cholesky_covariance);
+RcppExport SEXP CoupledPF_rmvnorm_transpose_cholesky(SEXP nsamplesSEXP, SEXP meanSEXP, SEXP cholesky_covarianceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type nsamples(nsamplesSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type mean(meanSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type cholesky_covariance(cholesky_covarianceSEXP);
+    __result = Rcpp::wrap(rmvnorm_transpose_cholesky(nsamples, mean, cholesky_covariance));
     return __result;
 END_RCPP
 }
@@ -227,21 +360,29 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// one_step_pz_
-NumericVector one_step_pz_(double P, double Z, double t, double alpha, double c, double e, double ml, double mq);
-RcppExport SEXP CoupledPF_one_step_pz_(SEXP PSEXP, SEXP ZSEXP, SEXP tSEXP, SEXP alphaSEXP, SEXP cSEXP, SEXP eSEXP, SEXP mlSEXP, SEXP mqSEXP) {
+// dmvnorm_transpose
+NumericVector dmvnorm_transpose(const NumericMatrix& x, const NumericVector& mean, const NumericMatrix& covariance);
+RcppExport SEXP CoupledPF_dmvnorm_transpose(SEXP xSEXP, SEXP meanSEXP, SEXP covarianceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< double >::type P(PSEXP);
-    Rcpp::traits::input_parameter< double >::type Z(ZSEXP);
-    Rcpp::traits::input_parameter< double >::type t(tSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type c(cSEXP);
-    Rcpp::traits::input_parameter< double >::type e(eSEXP);
-    Rcpp::traits::input_parameter< double >::type ml(mlSEXP);
-    Rcpp::traits::input_parameter< double >::type mq(mqSEXP);
-    __result = Rcpp::wrap(one_step_pz_(P, Z, t, alpha, c, e, ml, mq));
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type mean(meanSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type covariance(covarianceSEXP);
+    __result = Rcpp::wrap(dmvnorm_transpose(x, mean, covariance));
+    return __result;
+END_RCPP
+}
+// dmvnorm_transpose_cholesky
+NumericVector dmvnorm_transpose_cholesky(const NumericMatrix& x, const NumericVector& mean, const Eigen::MatrixXd& cholesky_covariance);
+RcppExport SEXP CoupledPF_dmvnorm_transpose_cholesky(SEXP xSEXP, SEXP meanSEXP, SEXP cholesky_covarianceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type mean(meanSEXP);
+    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type cholesky_covariance(cholesky_covarianceSEXP);
+    __result = Rcpp::wrap(dmvnorm_transpose_cholesky(x, mean, cholesky_covariance));
     return __result;
 END_RCPP
 }
@@ -256,6 +397,44 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type t(tSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type parameters(parametersSEXP);
     __result = Rcpp::wrap(one_step_pz_vector(xparticles, alphas, t, parameters));
+    return __result;
+END_RCPP
+}
+// pz_generate_randomness_cpp
+NumericVector pz_generate_randomness_cpp(int nparticles, int datalength);
+RcppExport SEXP CoupledPF_pz_generate_randomness_cpp(SEXP nparticlesSEXP, SEXP datalengthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type nparticles(nparticlesSEXP);
+    Rcpp::traits::input_parameter< int >::type datalength(datalengthSEXP);
+    __result = Rcpp::wrap(pz_generate_randomness_cpp(nparticles, datalength));
+    return __result;
+END_RCPP
+}
+// pz_perturb_randomness_cpp
+NumericVector pz_perturb_randomness_cpp(const NumericVector& randomness, double rho);
+RcppExport SEXP CoupledPF_pz_perturb_randomness_cpp(SEXP randomnessSEXP, SEXP rhoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type randomness(randomnessSEXP);
+    Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
+    __result = Rcpp::wrap(pz_perturb_randomness_cpp(randomness, rho));
+    return __result;
+END_RCPP
+}
+// stochvol_dmeas_
+NumericVector stochvol_dmeas_(NumericMatrix xparticles, List& theta, NumericVector& observation, int dimension);
+RcppExport SEXP CoupledPF_stochvol_dmeas_(SEXP xparticlesSEXP, SEXP thetaSEXP, SEXP observationSEXP, SEXP dimensionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type xparticles(xparticlesSEXP);
+    Rcpp::traits::input_parameter< List& >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type observation(observationSEXP);
+    Rcpp::traits::input_parameter< int >::type dimension(dimensionSEXP);
+    __result = Rcpp::wrap(stochvol_dmeas_(xparticles, theta, observation, dimension));
     return __result;
 END_RCPP
 }

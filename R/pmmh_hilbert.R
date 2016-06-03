@@ -3,7 +3,7 @@ particle_filter_given_uresampling <- function(nparticles, model, theta, observat
   uniforms <- pnorm(u_resampling)
   datalength <- nrow(observations)
   # initialization
-  xparticles <- model$rinit(nparticles, theta, randomness$init)
+  xparticles <- model$rinit(nparticles, theta, randomness)
   normweights <- rep(1/nparticles, nparticles)
   ll <- 0
   # step t > 1
@@ -13,8 +13,8 @@ particle_filter_given_uresampling <- function(nparticles, model, theta, observat
     ancestors <- systematic_resampling_n(nw_sorted, nparticles, uniforms[time])
     ancestors <- horder[ancestors]
     #
-    xparticles <- matrix(xparticles[ancestors,], ncol = model$dimension)
-    xparticles <- model$rtransition(xparticles, theta, time, randomness$transition[,time])
+    xparticles <- matrix(xparticles[,ancestors], nrow = model$dimension)
+    xparticles <- model$rtransition(xparticles, theta, time, randomness)
     logw <- model$dmeasurement(xparticles, theta, observations[time,])
     maxlw <- max(logw)
     w <- exp(logw - maxlw)
@@ -56,7 +56,8 @@ hilbert_pmmh <- function(pmmh_parameters, model, theta_init, observations){
     proposal_prior <- model$dprior(proposal)
     if (!is.infinite(proposal_prior)){
       proposal_randomness <- model$perturb_randomness(current_randomness, rho_perturb)
-      proposal_u_resampling <- rho_perturb * current_u_resampling + v_perturb * rnorm(datalength)
+      # proposal_u_resampling <- rho_perturb * current_u_resampling + v_perturb * rnorm(datalength)
+      proposal_u_resampling <- rnorm(datalength)
       proposal_ll <- try(particle_filter_given_uresampling(nparticles, model, proposal, observations, 
                                                            proposal_randomness, proposal_u_resampling))
       if (inherits(proposal_ll, "try-error")){

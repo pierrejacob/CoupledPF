@@ -1,9 +1,9 @@
-# PZ model
+# lorenz model
 # theta = (mu_alpha, sd_alpha, c, e, ml, mq)
 # transformed so that all parameters are in R
 # theta = (mu_alpha, log sd_alpha, logit c, logit e, logit ml, logit mq)
-#'@rdname get_pz
-#'@title Phytoplankton-Zooplankton model
+#'@rdname get_lorenz
+#'@title Lorenz 96 model
 #'@description This function returns a list with objects such as
 #'* rinit  to sample from the initial distribution
 #'* rtransition to sample from the transition
@@ -14,45 +14,38 @@
 #'* dimension, which represents the dimension of the latent process
 #'@return A list 
 #'@export
-get_pz <- function(){
-  logit <- function(z) log(z / (1 - z))
-  expit <- function(z) 1 / (1 + exp(-z))
-  
+get_lorenz <- function(){
   rinit <- function(nparticles, theta, rand, ...){
-    return(exp(matrix(log(2) + rand[1:(2*nparticles)], nrow = 2)))
-  }
-  rinit_rand <- function(nparticles, theta){
-    return(rnorm(2*nparticles))
+    unif <- -1 + 4 * pnorm(rand[1:(8*nparticles)])
+    return(matrix(unif, ncol = nparticles))
   }
   #  
   rtransition <- function(xparticles, theta, time, rand, ...){
-    ra <- rand[(2*nparticles + (time-1)*nparticles + 1):(2*nparticles+ (time)*nparticles)]
-    alphas <- theta[1] + exp(theta[2]) * ra
-    xparticles <- pz_transition(xparticles, alphas, time-1, expit(theta[3:6]))
+    nparticles <- ncol(xparticles)
+    ra <- rand[(8*nparticles + (time-1)*8*nparticles + 1):(8*nparticles + (time)*8*nparticles)]
+    xparticles <- lorenz_transition(xparticles, time_start = 0.05*(time - 1), time_end = 0.05*time, dt = 0.05, theta[1])
+    # print(dim(matrix(theta[2] * ra, ncol = nparticles)))
+    # print(dim(xparticles))
+    xparticles <- xparticles + matrix(theta[2] * ra, ncol = nparticles)
     return(xparticles)
   }
   #
-  rtransition_rand <- function(nparticles, theta){
-    return(rnorm(nparticles))
-  }
-  #
   dmeasurement <- function(xparticles, theta, observation, ...) {
-    return(dnorm(x = observation, mean = log(xparticles[1,]), sd = 0.2, log = TRUE))
+    return(fast_dmvnorm_transpose_cholesky(xparticles, observation, diag(0.5, 8, 8)))
   }
   #
   generate_randomness <- function(nparticles, datalength){
-    return(pz_generate_randomness_cpp(nparticles, datalength))
+    return(lorenz_generate_randomness_cpp(nparticles, datalength))
   }
   #
   perturb_randomness <- function(randomness, rho){
-    return(pz_perturb_randomness_cpp(randomness, rho))
+    return(lorenz_perturb_randomness_cpp(randomness, rho))
   }
   #
-  pz_model <- list(rinit = rinit, rinit_rand = rinit_rand, rtransition = rtransition,
-                   rtransition_rand = rtransition_rand,
+  lorenz_model <- list(rinit = rinit, rtransition = rtransition,
                    dmeasurement = dmeasurement,
                    generate_randomness = generate_randomness, 
                    perturb_randomness = perturb_randomness,
-                   dimension = 2)
-  return(pz_model)
+                   dimension = 8)
+  return(lorenz_model)
 }

@@ -6,15 +6,20 @@ coupled_pf_given <- function(nparticles, model, theta2, observations, randomness
                                     coupled_resampling_given, resampling_parameters = list(),
                                     system_ref){
   datalength <- nrow(observations)
+  precomputed <- try(model$precompute(theta2))
+  if (inherits(precomputed, "try-error")){
+    precomputed <- NULL
+  }
+  
   # initialization
   xparticles1 <- system_ref$xhistory[[1]]
   normweights1 <- system_ref$whistory[[1]]
   #
-  xparticles2 <- model$rinit(nparticles, theta2, randomness$init)
+  xparticles2 <- model$rinit(nparticles, theta2, randomness)
   normweights2 <- rep(1/nparticles, nparticles)
   ll2 <- 0
   #
-  xhistory <- rep(list(matrix(nrow = nparticles, ncol = ncol(xparticles2))), datalength + 1)
+  xhistory <- rep(list(matrix(ncol = nparticles, nrow = nrow(xparticles2))), datalength + 1)
   whistory <- rep(list(rep(0, nparticles)), datalength + 1)
   ahistory <- rep(list(rep(0, nparticles)), datalength)
   
@@ -27,10 +32,12 @@ coupled_pf_given <- function(nparticles, model, theta2, observations, randomness
     ancestors2 <- coupled_resampling_given(xparticles1, xparticles2, normweights1, normweights2, 
                                      resampling_parameters, ancestors1, runif(2*nparticles + 1))
     ahistory[[time]] <- ancestors2
-    xparticles2 <- xparticles2[ancestors2,]
+    xparticles2 <- xparticles2[,ancestors2]
+    if (is.null(dim(xparticles2))) xparticles2 <- matrix(xparticles2, nrow = model$dimension)
+    
     #
-    xparticles2 <- model$rtransition(xparticles2, theta2, time, randomness$transition[,time])
-    logw2 <- model$dmeasurement(xparticles2, theta2, observations[time,])
+    xparticles2 <- model$rtransition(xparticles2, theta2, time, randomness, precomputed)
+    logw2 <- model$dmeasurement(xparticles2, theta2, observations[time,], precomputed)
     maxlw2 <- max(logw2)
     w2 <- exp(logw2 - maxlw2)
     ll2 <- ll2 + maxlw2 + log(mean(w2))
@@ -38,6 +45,7 @@ coupled_pf_given <- function(nparticles, model, theta2, observations, randomness
     #
     xparticles1 <- system_ref$xhistory[[time + 1]]
     normweights1 <- system_ref$whistory[[time + 1]]
+    #
     #
     xhistory[[time+1]] <- xparticles2
     whistory[[time+1]] <- normweights2

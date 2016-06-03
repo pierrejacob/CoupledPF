@@ -43,7 +43,7 @@ coupled_pmmh <- function(pmmh_parameters, model, theta_init, observations){
         }
       }
       proposal_posterior <- proposal_ll + proposal_prior
-      if (log(runif(1)) < (proposal_ll - current_ll)){
+      if (log(runif(1)) < (proposal_posterior - current_posterior)){
         current_theta <- proposal
         current_ll <- proposal_ll
         current_posterior <- proposal_posterior

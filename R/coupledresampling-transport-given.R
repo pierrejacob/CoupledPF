@@ -1,11 +1,12 @@
-# transport resampling given a reference vector of ancestors 
+#'@rdname CR_transport_given
+#'@title Coupled Resampling: transport, given vector of ancestor
+#'@description This function performs tranasprt resampling on the second system
+#'@return A vector of ancestors
 #'@export
 CR_transport_given <- function(xparticles1, xparticles2, normweights1, normweights2, 
                                parameters = list(epsilon = 0.1, desired_alpha = 0.9),
                                ancestors_ref, uniforms){
   
-  # nparticles <- nrow(xparticles1)
-  # uniforms <- runif(2*nparticles + 1)
   return(transport_given_cpp(xparticles1, xparticles2, normweights1, normweights2, uniforms, parameters$epsilon, parameters$desired_alpha,
                              ancestors_ref - 1) + 1)
 }
