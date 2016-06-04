@@ -10,8 +10,6 @@ registerDoMC(cores = ncores)
 setmytheme()
 # fix the random seed
 set.seed(17)
-module_tree <<- Module("module_tree", PACKAGE = "CoupledCPF")
-TreeClass <<- module_tree$Tree
 
 dimension <- 1
 ar1 <- get_ar(dimension)
